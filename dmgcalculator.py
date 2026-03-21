@@ -16,8 +16,10 @@ while running == True:
     temp = input('Attack: ')
     if temp == 'stop':
         break
+    #Testar om det skrevs in en siffra
     try:
         atk = int(temp)
+    #Gjorde det inte det så startar "Continue" nästa Loop
     except:
         print('Error: Bara siffror')
         continue
