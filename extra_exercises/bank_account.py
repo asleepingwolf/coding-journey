@@ -8,9 +8,14 @@ class person(Bank_account):
         super().__init__(first_name, last_name)
         self.account_name = first_name[0:2] + last_name[0:2]
         self.password = password
+        self.amount = amount
     def login(self, login_name, login_pass):
         if login_name == self.account_name and login_pass == self.password:
             return True
+    def withdrawal(self, withraw_amount):
+        self.amount -= withraw_amount
+    def deposits(self, deposit_amount):
+        self.amount += deposit_amount
 
 kund1 = person('John', 'Doe', 1203, '123abc')
 
@@ -19,4 +24,13 @@ print('Welcome to Python Bank!')
 banking = kund1.login(input('Account name:'), input(f'Password: '))
 
 while banking == True:
-    input(f'What would you like')
+    choice = input(f'What would you like to do? \n 1.Check account balance \n 2. Deposit \n 3. Withdraw \n')
+    try:
+        if int(choice) == 1:
+            print('Account Balance {kund1.amount}')
+        elif int(choice) == 2:
+            kund1.deposits(input('Deposit amount: '))
+        elif int(choice) == 3:
+            kund1.withdrawal(input('Withdrawal Amount: '))
+    except ValueError:
+        continue
