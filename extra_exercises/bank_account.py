@@ -2,8 +2,9 @@ class Bank_account():
     def __init__(self, first_name, last_name):
         self.first_name = first_name
         self.last_name = last_name
+        
 
-class person(Bank_account):
+class Person(Bank_account):
     def __init__(self, first_name, last_name, amount, password):
         super().__init__(first_name, last_name)
         self.account_name = first_name[0:2] + last_name[0:2]
@@ -12,25 +13,53 @@ class person(Bank_account):
     def login(self, login_name, login_pass):
         if login_name == self.account_name and login_pass == self.password:
             return True
+        else:
+            return False
     def withdrawal(self, withraw_amount):
         self.amount -= withraw_amount
+        print(f'Your new balance is: {self.amount} \n')
     def deposits(self, deposit_amount):
         self.amount += deposit_amount
+        print(f'Your new balance is: {self.amount} \n')
 
-kund1 = person('John', 'Doe', 1203, '123abc')
+kund1 = Person('John', 'Doe', 1203, '123abc')
+kund2 = Person('Julia', 'Krigare', 63589, '123456')
 
-print(f'Välkommen {kund1.first_name}')
-print('Welcome to Python Bank!')
-banking = kund1.login(input('Account name:'), input(f'Password: '))
+customers = [kund1, kund2]
 
-while banking == True:
-    choice = input(f'What would you like to do? \n 1.Check account balance \n 2. Deposit \n 3. Withdraw \n')
+print(f'Welcome to Python Bank! Please log in. \n')
+while loggedin == False:
+    startup_choice = input(f'What do you want to do? 1. Log in. \n 2. Check accounts \n 3. Open new account \n')
+    if int(startup_choice) == 1:
+        input_name = input('Account name:')
+        input_pass = input(f'Password: ')
+        #Trying to login
+        for c in customers:
+            if c.login(input_name, input_pass) == True:
+                banking = c
+                loggedin = True
+                break
+    elif int(startup_choice) == 2:
+        for c in customers:
+            print(f'{c.first_name} \n')
+    elif int(startup_choice) == 3:
+        kund3 = Person(input(f'Name: '), f'\n Last name: ', 0, f'\n Password: ')
+
+
+
+print(f'Välkommen {banking.first_name}')
+
+while loggedin == True:
+    choice = input(f'What would you like to do? \n 1.Check account balance \n 2. Deposit \n 3. Withdraw \n 4. Logout \n')
     try:
         if int(choice) == 1:
-            print('Account Balance {kund1.amount}')
+            print(f'Account Balance {banking.amount} \n')
         elif int(choice) == 2:
-            kund1.deposits(input('Deposit amount: '))
+            banking.deposits(int(input('Deposit amount: ')))
         elif int(choice) == 3:
-            kund1.withdrawal(input('Withdrawal Amount: '))
+            banking.withdrawal(int(input('Withdrawal Amount: ')))
+        elif int(choice) == 4:
+            print('Goodbye!')
+            break
     except ValueError:
         continue
