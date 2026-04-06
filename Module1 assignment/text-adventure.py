@@ -13,8 +13,11 @@ class PlayerClass(Character):
         super().__init__(name, health, damage)
         self.weapon = 'Fists'
         self.inventory = {}
-        def InventoryAdd(self, item):
-            self.inventory.append(item)
+    def InventoryAdd(self, item):
+        # .get(item, 0) hämtar nuvarande antal, eller 0 om föremålet inte finns
+        current_amount = self.inventory.get(item, 0)
+        self.inventory[item] = current_amount + 1
+        print(f"Added 1 {item} to inventory.")
 
 #Monster Class
 class MonsterClass(Character):
@@ -24,24 +27,33 @@ class MonsterClass(Character):
 class RoomClass():
     def __init__(self, luck):
         self.luck = luck
+    def RoomMob(self, mob):
+        
+        MonsterClass()
     def loot(self):
         if self.luck >= 4:
             #temp = random.randint(0,3)
             temp = 0
             if temp == 0:
-                player.inventory('Health Potion')
+                player.InventoryAdd('Health Potion')
 
 #Initialising the player
 player = PlayerClass('Julia', 100 , 5)
+
+monsters = [
+    {"name": "Slime", "hp": 40, "dmg": 5, "ability": "Sticky"},
+    {"name": "Shadow Stalker", "hp": 70, "dmg": 25, "ability": "Evasion"},
+    {"name": "Rabid Wolf": 50, "dmg": 12, "ability": "Pack Mentality"}
+]
 
 print(player.name)
 print(player.weapon)
 print(f' Du har: {player.inventory}')
 
 
-room1 = RoomClass(5)
-room1.loot()
 
+room = [1]
+room[0] = RoomClass(5)
 print(f'Welcome {player.name}! \n ')
 print(player.inventory)
 choice = input(f'You stand in front of a door to a giant fortress. What would you like to do? \n 1. Enter \n 2 Leave \n ')
@@ -52,4 +64,5 @@ else:
     exit()
 #Game loop
 while playing == True:
+    
     exit()
