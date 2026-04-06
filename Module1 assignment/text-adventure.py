@@ -1,4 +1,5 @@
 import random
+from monsters import MonsterClass,monsters
 
 #Main class for all characters 
 class Character():
@@ -18,51 +19,78 @@ class PlayerClass(Character):
         current_amount = self.inventory.get(item, 0)
         self.inventory[item] = current_amount + 1
         print(f"Added 1 {item} to inventory.")
+    def takedamage(self, amount):
+        self.health -= amount
+        print(f"--> {self.name} tog {amount} i skada! (HP kvar: {self.health})")
+    def heavy_attack(self):
+        temp = random.randint(0 , 3)
+        if temp == 0:
+            print("You missed!")
+            pass
+        else:
+            # Räkna ut skadan först
+            min_dmg = int(self.damage * 1.75 - 2)
+            max_dmg = int(self.damage * 1.75)
+            heavy_dmg = random.randint(min_dmg, max_dmg)
+            # Skicka in den färdiga siffran
+            return(heavy_dmg)
 
-#Monster Class
-class MonsterClass(Character):
-    def __init__(self, name, health, damage):
-        super().__init__(name, health, damage)
 
-class RoomClass():
-    def __init__(self, luck):
-        self.luck = luck
-    def RoomMob(self, mob):
-        
-        MonsterClass()
-    def loot(self):
-        if self.luck >= 4:
-            #temp = random.randint(0,3)
-            temp = 0
-            if temp == 0:
-                player.InventoryAdd('Health Potion')
+
 
 #Initialising the player
 player = PlayerClass('Julia', 100 , 5)
-
-monsters = [
-    {"name": "Slime", "hp": 40, "dmg": 5, "ability": "Sticky"},
-    {"name": "Shadow Stalker", "hp": 70, "dmg": 25, "ability": "Evasion"},
-    {"name": "Rabid Wolf": 50, "dmg": 12, "ability": "Pack Mentality"}
-]
 
 print(player.name)
 print(player.weapon)
 print(f' Du har: {player.inventory}')
 
+# Väljer ett random monster från monster filen
+enemy_data = random.choice(monsters)
 
-
-room = [1]
-room[0] = RoomClass(5)
+#
+active_enemy = MonsterClass(
+    enemy_data["name"],
+    enemy_data["hp"],
+    enemy_data["dmg"],
+    enemy_data["ability"]
+)
+#room = [1]
 print(f'Welcome {player.name}! \n ')
-print(player.inventory)
+print(active_enemy.name, active_enemy.ability)
+#print(player.inventory)
 choice = input(f'You stand in front of a door to a giant fortress. What would you like to do? \n 1. Enter \n 2 Leave \n ')
 if int(choice) == 1:
-    playing = True
+    playing_game = True
 else:
     print(f'You go home and live your boring normal life. \n ---GAME OVER!---')
     exit()
+
+print(f"You push open the doors to the fortress and enter. \n")
 #Game loop
-while playing == True:
-    
+while playing_game == True:
+    fighting = True
+    enemy_data = random.choice(monsters)
+    active_enemy = MonsterClass(
+        enemy_data["name"],
+        enemy_data["hp"],
+        enemy_data["dmg"],
+        enemy_data["ability"]
+    )
+    print(f"In front of you stands {active_enemy.name} \n")
+    while active_enemy.health > 0 and player.health > 0:
+        choice = input("\n 1. Normal attack, 2. Hard attack: ")
+        try:
+            if int(choice) == 1:
+                active_enemy.takedamage(random.randint(player.damage -2, player.damage + 2))
+            elif int(choice) == 2:
+                    active_enemy.takedamage(player.heavy_attack())
+            else:
+                print("Choices was 1 or 2...")
+                continue
+        except ValueError:
+            print("Error, Choice 1 or 2")
+            continue
+        player.takedamage(active_enemy.damage)
+
     exit()
