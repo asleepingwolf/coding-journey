@@ -1,0 +1,22 @@
+{
+  "monsters": [
+    {
+      "name": "Goblin",
+      "hp": 30,
+      "damage": 5,
+      "description": "A small, green, annoying creature."
+    },
+    {
+      "name": "Orc",
+      "hp": 80,
+      "damage": 15,
+      "description": "A large, muscular warrior."
+    },
+    {
+      "name": "Slime", 
+      "hp": 40, 
+      "dmg": 5, 
+      "ability": "Sticky"
+    }
+  ]
+}
