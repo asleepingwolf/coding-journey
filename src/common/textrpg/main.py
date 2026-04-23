@@ -1,24 +1,31 @@
 import random
-from monsters import MonsterClass,monsters
+import json
+from src.common.textrpg.monsters import MonsterClass
+from src.common.interface import clear_screen
 
 #Main class for all characters 
-class Character():
+class Entity():
     def __init__(self, name, health, damage):
         self.name = name
         self.health = health
         self.damage = damage
 
-#Player class, weapons inventory
-class PlayerClass(Character):
+class Inventory:
+    def __init__(self):
+        self.items = {}
+    def add(self, item_name):
+        # .get(item, 0) hämtar nuvarande antal, eller 0 om föremålet inte finns
+        current_amount = self.items.get(item_name, 0)
+        self.items[item_name] = current_amount + 1
+        print(f"Added 1 {item_name} to inventory.")
+
+
+
+#Player class, weapons
+class PlayerClass(Entity):
     def __init__(self, name, health, damage):
         super().__init__(name, health, damage)
         self.weapon = 'Fists'
-        self.inventory = {}
-    def InventoryAdd(self, item):
-        # .get(item, 0) hämtar nuvarande antal, eller 0 om föremålet inte finns
-        current_amount = self.inventory.get(item, 0)
-        self.inventory[item] = current_amount + 1
-        print(f"Added 1 {item} to inventory.")
     def takedamage(self, amount):
         self.health -= amount
         print(f"--> {self.name} tog {amount} i skada! (HP kvar: {self.health})")
@@ -43,21 +50,22 @@ player = PlayerClass('Julia', 100 , 5)
 
 print(player.name)
 print(player.weapon)
-print(f' Du har: {player.inventory}')
+#print(f' Du har: {player.inventory}')
 
 # Väljer ett random monster från monster filen
-enemy_data = random.choice(monsters)
+#enemy_data = random.choice(monsters)
 
 #
-active_enemy = MonsterClass(
-    enemy_data["name"],
-    enemy_data["hp"],
-    enemy_data["dmg"],
-    enemy_data["ability"]
-)
+#active_enemy = MonsterClass(
+#    enemy_data["name"],
+#    enemy_data["hp"],
+#    enemy_data["dmg"],
+#    enemy_data["ability"]
+#)
 #room = [1]
+clear_screen()
 print(f'Welcome {player.name}! \n ')
-print(active_enemy.name, active_enemy.ability)
+#print(active_enemy.name, active_enemy.ability)
 #print(player.inventory)
 choice = input(f'You stand in front of a door to a giant fortress. What would you like to do? \n 1. Enter \n 2 Leave \n ')
 if int(choice) == 1:
